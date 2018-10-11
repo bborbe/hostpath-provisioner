@@ -19,7 +19,6 @@ package controller
 import (
 	"context"
 	"fmt"
-	"github.com/bborbe/hostpath-provisioner/controller/metrics"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -28,8 +27,11 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/bborbe/hostpath-provisioner/controller/metrics"
+	"github.com/bborbe/hostpath-provisioner/util"
+	utilversion "github.com/bborbe/hostpath-provisioner/version"
 	"github.com/golang/glog"
-	"github.com/kubernetes-incubator/external-storage/lib/util"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/time/rate"
@@ -52,7 +54,6 @@ import (
 	ref "k8s.io/client-go/tools/reference"
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/kubernetes/pkg/apis/core/v1/helper"
-	utilversion "github.com/bborbe/hostpath-provisioner/version"
 )
 
 // annClass annotation represents the storage class associated with a resource:
@@ -1001,12 +1002,12 @@ func (ctrl *ProvisionController) provisionClaimOperation(claim *v1.PersistentVol
 
 	options := VolumeOptions{
 		PersistentVolumeReclaimPolicy: reclaimPolicy,
-		PVName:            pvName,
-		PVC:               claim,
-		MountOptions:      mountOptions,
-		Parameters:        parameters,
-		SelectedNode:      selectedNode,
-		AllowedTopologies: allowedTopologies,
+		PVName:                        pvName,
+		PVC:                           claim,
+		MountOptions:                  mountOptions,
+		Parameters:                    parameters,
+		SelectedNode:                  selectedNode,
+		AllowedTopologies:             allowedTopologies,
 	}
 
 	ctrl.eventRecorder.Event(claim, v1.EventTypeNormal, "Provisioning", fmt.Sprintf("External provisioner is provisioning volume for claim %q", claimToClaimKey(claim)))
