@@ -73,7 +73,7 @@ var _ controller.Provisioner = &hostPathProvisioner{}
 
 // Provision creates a storage asset and returns a PV object representing it.
 func (p *hostPathProvisioner) Provision(options controller.VolumeOptions) (*v1.PersistentVolume, error) {
-	path := path.Join(p.pvDir, options.PVName)
+	path := path.Join(p.pvDir, options.PVC.Namespace+"-"+options.PVC.Name+"-"+options.PVName)
 
 	if err := os.MkdirAll(path, 0777); err != nil {
 		return nil, err
