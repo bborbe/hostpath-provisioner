@@ -1,4 +1,4 @@
-FROM golang:1.11.0 AS build
+FROM golang:1.12.0 AS build
 COPY . /go/src/github.com/bborbe/hostpath-provisioner
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s" -a -installsuffix cgo -o /main ./src/github.com/bborbe/hostpath-provisioner
 CMD ["/bin/bash"]
